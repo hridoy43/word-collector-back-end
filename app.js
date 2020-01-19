@@ -80,7 +80,7 @@ io.on('connection', function (socket) {
 
     socket.on('save', function (data) {
         //Send message to everyone
-        console.log('Clicked on Yes!', data);
+        //console.log('Clicked on Yes!', data);
         fs.appendFile("dicData.txt", data + "\n", 'utf8', function (err) {
             if (err) {
                 return console.log(err);
