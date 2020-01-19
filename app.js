@@ -73,7 +73,7 @@ io.on('connection', function (socket) {
             if (err) {
                 return console.log(err);
             }
-            console.log("The file was saved!");
+            //console.log("The file was saved!");
         });
         //io.sockets.emit('newmsg', data);
     })
@@ -85,7 +85,7 @@ io.on('connection', function (socket) {
             if (err) {
                 return console.log(err);
             }
-            console.log("The file was saved in DicData!");
+            //console.log("The file was saved in DicData!");
 
             //also removing from temp
             let txt = data + "\n"
@@ -107,7 +107,7 @@ io.on('connection', function (socket) {
 
     socket.on('remove', function (data) {
         //Send message to everyone
-        console.log('Clicked on No!', data);
+        //console.log('Clicked on No!', data);
 
         let txt = data + "\n"
         fs.readFile('temp.txt', 'utf8', function (err, txtStream) {
