@@ -15,7 +15,12 @@
 
     <style>
         #data td {
-            padding: 5px !important;
+            padding: 5px 10px !important;
+        }
+
+        tr.disabled {
+            background-color: rgba(128, 128, 128, .5);
+            opacity: .9;
         }
     </style>
 
@@ -28,6 +33,7 @@
 
             source.addEventListener('message', function (e) {
                 let tr = document.createElement('tr')
+                tr.className = "tr-data";
                 let data_td = document.createElement('td')
                 let button_td = document.createElement('td')
 
@@ -39,12 +45,12 @@
                 let yesButton = document.createElement('button');
                 yesButton.innerHTML = "Yes";
                 yesButton.className = 'btn btn-success';
-                yesButton.addEventListener('click', () => { onYesButton(e.data) });
+                yesButton.addEventListener('click', (event) => { onYesButton(event, e.data) });
 
                 let noButton = document.createElement('button');
                 noButton.innerHTML = "No";
                 noButton.className = 'btn btn-danger';
-                noButton.addEventListener('click', () => { onNoButton(e.data) });
+                noButton.addEventListener('click', (event) => { onNoButton(event, e.data) });
 
 
                 button_td.appendChild(yesButton);
@@ -59,20 +65,20 @@
             }, false)
 
             source.addEventListener('open', function (e) {
-                document.getElementById('state').innerHTML = "Connected"
+                //document.getElementById('state').innerHTML = "Connected"
                 document.getElementById('data').innerHTML = "";
                 // document.getElementById('data-button').innerHTML = "";
             }, false)
 
             source.addEventListener('error', function (e) {
-                const id_state = document.getElementById('state')
+                //const id_state = document.getElementById('state')
                 if (e.eventPhase == EventSource.CLOSED)
                     //source.close()
                     if (e.target.readyState == EventSource.CLOSED) {
                         id_state.innerHTML = "Disconnected"
                     }
                     else if (e.target.readyState == EventSource.CONNECTING) {
-                        id_state.innerHTML = "Connecting..."
+                        //id_state.innerHTML = "Connecting..."
                     }
             }, false)
         } else {
@@ -99,7 +105,10 @@
 </style>
 
 <body>
-    <h1>SSE: <span id="state"></span></h1>
+    <center>
+        <h1>DASHBOARD</h1>
+    </center>
+    <!-- <h1>SSE: <span id="state"></span></h1> -->
     <!-- <h6>Data: <ul id="data"></ul>
     </h6> -->
     <div class="col-12 col-md-5">
@@ -112,12 +121,24 @@
     <script>
         var socket = io.connect('http://localhost:3000');
 
-        function onYesButton(li_innerText) {
+        function onYesButton(e, li_innerText) {
+            //elemntToDisable.disabled = false;
+            if (e.target.closest('.tr-data')) {
+                let trElement = e.target.closest('.tr-data');
+                trElement.classList.add("disabled");
+            }
+            console.log('Log: onYesButton -> elemntToDisable', e.target.closest('.tr-data'))
             data = String(li_innerText).trim();
             socket.emit("save", data);
         }
 
-        function onNoButton(li_innerText) {
+        function onNoButton(e, li_innerText) {
+            //elemntToDisable.disabled = false;
+            if (e.target.closest('.tr-data')) {
+                let trElement = e.target.closest('.tr-data');
+                trElement.classList.add("disabled");
+            }
+            console.log('Log: onYesButton -> elemntToDisable', e.target.closest('.tr-data'))
             data = String(li_innerText).trim();
             socket.emit("remove", data);
         }
