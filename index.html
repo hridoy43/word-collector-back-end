@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- <link rel="stylesheet" href="/styles.css" type='text/css'> -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+    <title>Dashboard</title>
+
+    <style>
+        #data td {
+            padding: 5px !important;
+        }
+    </style>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        if (!!window.EventSource) {
+            var source = new EventSource('/countdown');
+
+            source.addEventListener('message', function (e) {
+                let tr = document.createElement('tr')
+                let data_td = document.createElement('td')
+                let button_td = document.createElement('td')
+
+
+                // let li = document.createElement('li')
+                // let button_li = document.createElement('li')
+                data_td.innerHTML = e.data;
+
+                let yesButton = document.createElement('button');
+                yesButton.innerHTML = "Yes";
+                yesButton.className = 'btn btn-success';
+                yesButton.addEventListener('click', () => { onYesButton(e.data) });
+
+                let noButton = document.createElement('button');
+                noButton.innerHTML = "No";
+                noButton.className = 'btn btn-danger';
+                noButton.addEventListener('click', () => { onNoButton(e.data) });
+
+
+                button_td.appendChild(yesButton);
+                button_td.appendChild(noButton);
+
+                tr.appendChild(data_td);
+                tr.appendChild(button_td);
+
+                document.getElementById('data').appendChild(tr);
+                //document.getElementById('data-button').appendChild(button_li);
+
+            }, false)
+
+            source.addEventListener('open', function (e) {
+                document.getElementById('state').innerHTML = "Connected"
+                document.getElementById('data').innerHTML = "";
+                // document.getElementById('data-button').innerHTML = "";
+            }, false)
+
+            source.addEventListener('error', function (e) {
+                const id_state = document.getElementById('state')
+                if (e.eventPhase == EventSource.CLOSED)
+                    //source.close()
+                    if (e.target.readyState == EventSource.CLOSED) {
+                        id_state.innerHTML = "Disconnected"
+                    }
+                    else if (e.target.readyState == EventSource.CONNECTING) {
+                        id_state.innerHTML = "Connecting..."
+                    }
+            }, false)
+        } else {
+            console.log("Your browser doesn't support SSE")
+        }
+    </script>
+</head>
+</head>
+
+
+<style>
+    button {
+
+        margin-left: 15px;
+
+    }
+
+    li {
+
+        list-style: none;
+        padding: 5px;
+
+    }
+</style>
+
+<body>
+    <h1>SSE: <span id="state"></span></h1>
+    <!-- <h6>Data: <ul id="data"></ul>
+    </h6> -->
+    <div class="col-12 col-md-5">
+        <table class="table table-light">
+            <tbody id="data">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var socket = io.connect('http://localhost:3000');
+
+        function onYesButton(li_innerText) {
+            data = String(li_innerText).trim();
+            socket.emit("save", data);
+        }
+
+        function onNoButton(li_innerText) {
+            data = String(li_innerText).trim();
+            socket.emit("remove", data);
+        }
+
+    </script>
+</body>
+
+</html>
