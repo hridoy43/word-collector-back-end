@@ -10,4 +10,4 @@ to run
 
 
 start on the port 3000 and then visit -> 
-`http://localhost:3000` (this is strict, if you run the program on another port, Then you have to change the socket URL from webExtention background.js) :3
+`http://localhost:3000` (this is strict, if you run the program on another port, Then you have to change the socket URL from webExtention's background.js) :3
