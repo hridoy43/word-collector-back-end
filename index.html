@@ -127,7 +127,7 @@
                 let trElement = e.target.closest('.tr-data');
                 trElement.classList.add("disabled");
             }
-            console.log('Log: onYesButton -> elemntToDisable', e.target.closest('.tr-data'))
+            //console.log('Log: onYesButton -> elemntToDisable', e.target.closest('.tr-data'))
             data = String(li_innerText).trim();
             socket.emit("save", data);
         }
@@ -138,7 +138,7 @@
                 let trElement = e.target.closest('.tr-data');
                 trElement.classList.add("disabled");
             }
-            console.log('Log: onYesButton -> elemntToDisable', e.target.closest('.tr-data'))
+            //console.log('Log: onYesButton -> elemntToDisable', e.target.closest('.tr-data'))
             data = String(li_innerText).trim();
             socket.emit("remove", data);
         }
