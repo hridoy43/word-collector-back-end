@@ -68,14 +68,23 @@ io.on('connection', function (socket) {
 
     socket.on('dicData', function (data) {
         //Send message to everyone
-        console.log(data);
-        fs.appendFile("temp.txt", data.toString() + "\n", 'utf8', function (err) {
+        //console.log(data);
+        fs.readFile('temp.txt', 'utf8', function (err, txtStream) {
             if (err) {
                 return console.log(err);
             }
-            //console.log("The file was saved!");
+
+            var boolResult = txtStream.includes(data);
+            if (!boolResult) {
+                fs.appendFile("temp.txt", data.toString() + "\n", 'utf8', function (err) {
+                    if (err) {
+                        return console.log(err);
+                    }
+                    //console.log("The file was saved!");
+                });
+            }
         });
-        //io.sockets.emit('newmsg', data);
+
     })
 
     socket.on('save', function (data) {
